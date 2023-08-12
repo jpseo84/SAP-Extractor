@@ -1,6 +1,6 @@
 REPORT ZAA01_EXTRACT_USER_ROLES.
 
-* 변수선언
+* 데이터형 등 선언
 TYPES: BEGIN OF ty_user_roles,
          bname TYPE usr02-bname,      " User
          agr_name TYPE agr_users-agr_name, " Role
