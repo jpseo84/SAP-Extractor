@@ -1,6 +1,6 @@
 REPORT ZAA04_EXTRACT_SUPERUSERS.
 
-* 데이터형 등 선언
+* Data declaration
 TYPES: BEGIN OF ty_superusers,
          bname    TYPE s_user_pro-bname,    " User Name
          profilename TYPE s_user_pro-profile " Profile Name
@@ -13,7 +13,7 @@ DATA: it_superusers TYPE TABLE OF ty_superusers,
       lt_csv_data TYPE TABLE OF string,
       lv_csv_line TYPE string.
 
-* 추출 필요 파라메터 설정
+* Set data extraction parameters
 CLEAR lr_profiles.
 lr_profiles-SIGN = 'I'.
 lr_profiles-OPTION = 'EQ'.
@@ -23,7 +23,7 @@ APPEND lr_profiles.
 lr_profiles-LOW = 'SAP_NEW'.
 APPEND lr_profiles.
 
-* 관련 프로파일 부여된 유저 추출(S_USER_PRO 테이블)
+* Extract superuser lists from S_USER_PRO table
 SELECT bname
        profile
   INTO TABLE it_superusers
@@ -36,7 +36,7 @@ LOOP AT it_superusers INTO wa_superusers.
   APPEND lv_csv_line TO lt_csv_data.
 ENDLOOP.
 
-* 파일출력을 위한 대화상자 프론트엔드 호출
+* Call save dialog
 CALL METHOD cl_gui_frontend_services=>file_save_dialog
   EXPORTING
     window_title  = 'Save As'

@@ -1,6 +1,6 @@
 REPORT ZAA01_EXTRACT_USER_ROLES.
 
-* 데이터형 등 선언
+* Data declaration
 TYPES: BEGIN OF ty_user_roles,
          bname TYPE usr02-bname,      " User
          agr_name TYPE agr_users-agr_name, " Role
@@ -10,11 +10,11 @@ TYPES: BEGIN OF ty_user_roles,
 DATA: it_user_roles TYPE TABLE OF ty_user_roles,
       wa_user_roles TYPE ty_user_roles.
 
-* 파일출력
+* File output
 DATA: lv_filename TYPE string,
       lv_csv_data TYPE string.
 
-* 사용자 권한을 USR02 테이블 정보를 기준으로 추출
+* Extract User Privileges from USER02 table
 SELECT A~BNAME, C~AGR_NAME, C~FROM_DAT
   INTO CORRESPONDING FIELDS OF TABLE it_user_roles
   FROM USR02 AS A
@@ -24,7 +24,7 @@ LOOP AT it_user_roles INTO wa_user_roles.
   CONCATENATE lv_csv_data wa_user_roles-bname ';' wa_user_roles-agr_name ';' wa_user_roles-from_dat CL_ABAP_CHAR_UTILITIES=>CR_LF INTO lv_csv_data.
 ENDLOOP.
 
-* 파일출력을 위한 대화상자 프론트엔드 호출
+* Call save dialog
 CALL METHOD cl_gui_frontend_services=>file_save_dialog
   EXPORTING
     window_title  = 'Save As'

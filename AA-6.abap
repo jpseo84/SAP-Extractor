@@ -1,6 +1,6 @@
 REPORT ZAA06_EXTRACT_PWD_PARAMS.
 
-* 데이터형 등 선언
+* Data declaration
 TYPES: BEGIN OF ty_password_params,
          partype   TYPE pahi-partype,       " Parameter Type
          hostname  TYPE pahi-hostname,      " Host Name
@@ -18,7 +18,8 @@ DATA: it_password_params TYPE TABLE OF ty_password_params,
       lt_csv_data TYPE TABLE OF string,
       lv_csv_line TYPE string.
 
-* 추출 필요 파라메터 설정
+* Set data extraction parameters
+
 CLEAR lr_parname.
 lr_parname-SIGN = 'I'.
 lr_parname-OPTION = 'EQ'.
@@ -38,7 +39,7 @@ APPEND lr_parname.
 lr_parname-LOW = 'login/password_expiration_time'.
 APPEND lr_parname.
 
-* SAP 관련 테이블에서 데이터 추출
+* Extract password-relevant data
 SELECT partype
        hostname
        systemid
@@ -55,7 +56,7 @@ LOOP AT it_password_params INTO wa_password_params.
   APPEND lv_csv_line TO lt_csv_data.
 ENDLOOP.
 
-* 파일출력을 위한 대화상자 프론트엔드 호출
+* Call save dialog
 CALL METHOD cl_gui_frontend_services=>file_save_dialog
   EXPORTING
     window_title  = 'Save As'
